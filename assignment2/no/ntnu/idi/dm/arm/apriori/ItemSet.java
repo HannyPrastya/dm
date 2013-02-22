@@ -26,7 +26,7 @@ public class ItemSet<V> implements Comparable<ItemSet<V>> {
 		this.items.add(item);
 	}
 
-	
+
 	// access methods
 	public Set<V> getItems() {
 		return items;
@@ -56,7 +56,7 @@ public class ItemSet<V> implements Comparable<ItemSet<V>> {
 
 	/**
 	 * get the union of the current itemset and the given one
-	 * 
+	 *
 	 * @param itemSet
 	 * @return
 	 */
@@ -68,7 +68,7 @@ public class ItemSet<V> implements Comparable<ItemSet<V>> {
 
 	/**
 	 * get the union of the current itemset and the given item
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
@@ -78,10 +78,10 @@ public class ItemSet<V> implements Comparable<ItemSet<V>> {
 		return new ItemSet<V>(union);
 	}
 
-	
+
 	/**
 	 * get the intersection of the current itemset and the given one
-	 * 
+	 *
 	 * @param itemSet
 	 * @return
 	 */
@@ -123,7 +123,7 @@ public class ItemSet<V> implements Comparable<ItemSet<V>> {
 	/**
 	 * returns how many consecutive items occurr in both set (starting from the
 	 * first item) e.g. for the two sets <A,B,C> and <A,B,F> it will return 2.
-	 * 
+	 *
 	 * @param other
 	 * @return
 	 */
