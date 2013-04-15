@@ -179,7 +179,7 @@ public class KMeans {
                 feedback = true;
             }
             instancesInClusters.put(i, index);
-            this.clusters[i].addIndex(i);
+            this.clusters[index].addIndex(i);
         }
 		return feedback;
 	}
@@ -324,9 +324,17 @@ public class KMeans {
 	}
 
     private double[] calculateM() {
-        double[] m = new double[clusters.length];
+        int indices_length = clusters[0].getCentroid().length;
+        double[] m = new double[indices_length];
+
         for (int i = 0; i < clusters.length; i++) {
-            m[i] = clusters[i].getNumberOfInstances();
+            for (int j = 0; j < clusters[i].getCentroid().length; j++) {
+                m[j] += clusters[i].getCentroid()[j];
+            }
+            //m[i] = clusters[i].getNumberOfInstances();
+        }
+        for (int i = 0; i < indices_length; i++) {
+            m[i] = m[i] / indices_length;
         }
         return m;
     }
