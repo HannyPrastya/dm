@@ -176,7 +176,7 @@ public class KMeans {
             double[] instance = this.data[i];
             int oldClusterIndex = -1;
 
-            if(instancesInClusters.contains(i)) {
+            if(instancesInClusters.containsKey(i)) {
                 oldClusterIndex = instancesInClusters.get(i);
             }
 
