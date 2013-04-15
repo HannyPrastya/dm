@@ -292,7 +292,9 @@ public class KMeans {
 	 */
 	public double getSSE() {
 		double sse=0;
-		//TODO
+		for (int i = 0; i < clusters.length; i ++) {
+            sse += clusters[i].SSE(this.data);
+        }
 		return sse;
 	}
 
@@ -302,7 +304,9 @@ public class KMeans {
 	 */
 	public double getSSB() {
 		double ssb=0;
-		//TODO
+        for (int i = 0; i < clusters.length; i ++) {
+            ssb += clusters[i].SSB(this.data, );
+        }
 		return ssb;
 	}
 
