@@ -152,7 +152,7 @@ public class Cluster {
         double ssb=0;
         double[][] instances = getInstances(data);
         for (int i = 0; i < instances.length; i ++) {
-            ssb += data.length * Math.pow(EuclideanDistance.distance(instances[i], m), 2);
+            ssb += instances.length * Math.pow(EuclideanDistance.distance(instances[i], m), 2);
         }
         return ssb;
 	}
