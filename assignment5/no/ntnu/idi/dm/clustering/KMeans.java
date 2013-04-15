@@ -169,20 +169,41 @@ public class KMeans {
 	 */
 	private boolean recalculateClusters() {
         boolean feedback = false;
-        for(int i = 0; i < getData().length; i++){
-            int index = getIndexOfClosestCluster(getData()[i]);
-            if(instancesInClusters.containsKey(i)){
-                if(instancesInClusters.get(i) != index){
-                    feedback = true;
-                }
+        int numberOfUpdates = 0;
+
+        for(int i = 0; i < data.length; i++) {
+
+            double[] instance = this.data[i];
+            int oldClusterIndex = -1;
+
+            if(instancesInClusters.contains(i)) {
+                oldClusterIndex = instancesInClusters.get(i);
             }
-            else {
+
+            int newClusterIndex = getIndexOfClosestCluster(instance);
+
+            if (oldClusterIndex != newClusterIndex) {
+                numberOfUpdates ++;
+
+                if (oldClusterIndex != -1) {
+                    instancesInClusters.remove(i);
+                    clusters[oldClusterIndex].removeInstanceIndex(i);
+                }
+
+                clusters[newClusterIndex].addIndex(i);
+                instancesInClusters.put(i, newClusterIndex);
+
                 feedback = true;
             }
-            instancesInClusters.put(i, index);
-            this.clusters[index].addIndex(i);
+
         }
-		return feedback;
+
+        if(numberOfUpdates == lastNumberOfUpdates) {
+            feedback = false;
+        }
+        lastNumberOfUpdates = numberOfUpdates;
+
+        return feedback;
 	}
 
 	/**
