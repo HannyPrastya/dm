@@ -137,7 +137,9 @@ public class Cluster {
 	 */
 	public double SSE(double[][] data) {
 		double sse = 0d;
-		//TODO
+        for (int i = 0; i < data.length; i ++) {
+            sse += Math.pow(distanceFunction.distance(data[i], centroid), 2);
+        }
 		return sse;
 	}
 
@@ -148,9 +150,11 @@ public class Cluster {
 	 * @param data
 	 * @return
 	 */
-	public double SSB(double[] m) {
+	public double SSB(double[][] data, double[] m) {
 		double ssb=0;
-		//TODO
+        for (int i = 0; i < data.length; i ++) {
+            ssb += data.length * Math.pow(distanceFunction.distance(data[i], m), 2);
+        }
 		return ssb;
 	}
 
