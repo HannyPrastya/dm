@@ -407,7 +407,7 @@ public class KMeans {
         int distance = 0;
         double[] instance = this.data[index];
         int clusterIndex = -1;
-        if(instancesInClusters.contains(index)){
+        if(instancesInClusters.containsKey(index)){
             clusterIndex = instancesInClusters.get(index);
         }
         for (int j = 0; j < this.clusters.length; j++) {
@@ -425,7 +425,7 @@ public class KMeans {
     private int getAverageDistanceInCluster(int index) {
         int distance = 0;
         double[] instance = this.data[index];
-        if(instancesInClusters.contains(index)){
+        if(instancesInClusters.containsKey(index)){
             int clusterIndex = instancesInClusters.get(index);
             for(int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances() - 1; i++){
                 distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
