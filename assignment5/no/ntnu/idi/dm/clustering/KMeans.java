@@ -390,11 +390,11 @@ public class KMeans {
 
     public double getAverageSilhouetteValue() {
         double silhouette = 0;
-        for(int i = 0; i < k; i++) {
+        for(int i = 0; i < getClusters().length; i++) {
             for(int j = 0; j < clusters[i].getNumberOfInstances(); j++) {
                 double a = clusters[i].getAverageDistanceOfPoint(data, clusters[i].getIndices().get(j));
                 double b = Double.MAX_VALUE;
-                for(int l = 0; l < k; l++) {
+                for(int l = 0; l < getClusters().length; l++) {
                     if(l != k) {
                         double tmpB = clusters[l].getAverageDistanceOfPointToAllPoints(data,clusters[i].getIndices().get(j));
                         if(tmpB < b) {
