@@ -175,7 +175,8 @@ public class KMeans {
                 if(instancesInClusters.get(i) != index){
                     feedback = true;
                 }
-            } else {
+            }
+            else {
                 feedback = true;
             }
             instancesInClusters.put(i, index);
@@ -331,7 +332,6 @@ public class KMeans {
             for (int j = 0; j < clusters[i].getCentroid().length; j++) {
                 m[j] += clusters[i].getCentroid()[j];
             }
-            //m[i] = clusters[i].getNumberOfInstances();
         }
         for (int i = 0; i < indices_length; i++) {
             m[i] = m[i] / indices_length;
@@ -371,11 +371,12 @@ public class KMeans {
 		double silhouette = 0;
         for(int i = 0; i < this.data.length; i++){
             try{
+                int a = getAverageDistanceInCluster(i);
+                int b = getAverageDistanceOutsideCluster(i);
+                silhouette += (b - a)/Math.max(b, a);
+            } catch (ArithmeticException e){
 
-            int a = getAverageDistanceInCluster(i);
-            int b = getAverageDistanceOutsideCluster(i);
-            silhouette += (b - a)/Math.max(b, a);
-            } catch (ArithmeticException e){}
+            }
         }
         silhouette = silhouette / this.getClusters().length;
 		return silhouette;
