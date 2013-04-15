@@ -32,7 +32,7 @@ import org.apache.commons.math3.random.RandomGenerator;
 
 /**
  * Pretty much the classic K-Means clustering. Tried to keep it simple, though.
- * 
+ *
  * @author Robert Neumayer
  * @version $Id: KMeans.java 3921 2010-11-05 12:54:53Z mayer $
  */
@@ -42,7 +42,7 @@ public class KMeans {
 	protected double[][] data;
 
 	private int k;  //the number of desired clusters
-	private int numberOfInstances; //the number of data points 
+	private int numberOfInstances; //the number of data points
 	private int numberOfAttributes; //the number of atttributes each data point has. The number of dimensions each data point has.
 
 	// keep min, max values and the differences between them
@@ -61,7 +61,7 @@ public class KMeans {
 	/**
 	 * Default constructor (as much defaulting as possible). Uses linear
 	 * initialisation and Euclidean distance.
-	 * 
+	 *
 	 * @param k
 	 *            number of clusters
 	 * @param data
@@ -73,7 +73,7 @@ public class KMeans {
 
 	/**
 	 * Construct a new K-Means object.
-	 * 
+	 *
 	 * @param k
 	 *            number of clusters
 	 * @param data
@@ -163,7 +163,7 @@ public class KMeans {
 
 	/**
 	 * A classic training step in the K-Means world.
-	 * 
+	 *
 	 * @return whether this step brought any changes or not. Note, this one also
 	 *         says no if there were as many changes as in the last step.
 	 */
@@ -199,7 +199,7 @@ public class KMeans {
 	 * Get a new centroid for empty clusters. We therefore take the instance
 	 * with the largest SSE to the cluster centroid having the largest SSE. Get
 	 * the idea? Read slowly.
-	 * 
+	 *
 	 * @return a new centroid (rather: a clone thereof :))
 	 */
 	private double[] getSubstituteCentroid() {
@@ -228,7 +228,7 @@ public class KMeans {
 	 * indices will have a tendency to be larger. It hopefully won't have too
 	 * much impact, possibly a random assignment in case of equal weights would
 	 * make sense, however, this would require a couple of steps more in here.
-	 * 
+	 *
 	 * @param instance
 	 *            the data vector to be assigned
 	 * @return index of the closest cluster centre
@@ -293,7 +293,7 @@ public class KMeans {
 
 	/**
 	 * Get the sum of the squared error for all clusters.
-	 * 
+	 *
 	 * @return SSE.
 	 */
 	public double getSSE() {
@@ -305,21 +305,30 @@ public class KMeans {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return SSB.
 	 */
 	public double getSSB() {
+
         double ssb=0;
+        double[] m = calculateM();
         for (int i = 0; i < clusters.length; i ++) {
-//            TODO: get m
-//            ssb += clusters[i].SSB(this.data, );
+            ssb += clusters[i].SSB(this.data, m);
         }
         return ssb;
 	}
 
-	/**
+    private double[] calculateM() {
+        double[] m = new double[clusters.length];
+        for (int i = 0; i < clusters.length; i++) {
+            m[i] = clusters[i].getNumberOfInstances();
+        }
+        return m;
+    }
+
+    /**
 	 * Get the sum of the squared error for single clusters.
-	 * 
+	 *
 	 * @return several SSEs.
 	 */
 	public double[] getSSEs() {
@@ -347,10 +356,49 @@ public class KMeans {
 
 	public double getAverageSilhouetteValue() {
 		double silhouette = 0;
-        for(int i = 0; i < this.getClusters().length; i++){
-//            silhouette = (b[i] - a[i])/Math.max(b[i], a[i])
+        for(int i = 0; i < this.data.length; i++){
+            try{
+
+            int a = getAverageDistanceInCluster(i);
+            int b = getAverageDistanceOutsideCluster(i);
+            silhouette += (b - a)/Math.max(b, a);
+            } catch (ArithmeticException e){
+
+            }
         }
         silhouette = silhouette / this.getClusters().length;
 		return silhouette;
 	}
+
+    private int getAverageDistanceOutsideCluster(int index) {
+        int distance = 0;
+        double[] instance = this.data[index];
+        int clusterIndex = -1;
+        if(instancesInClusters.contains(index)){
+            clusterIndex = instancesInClusters.get(index);
+        }
+        for (int j = 0; j < this.clusters.length; j++) {
+            if (j != clusterIndex) {
+                int c_distance = 0;
+                for (int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances(); i++) {
+                    c_distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
+                }
+                distance += c_distance / this.clusters[clusterIndex].getNumberOfInstances();
+            }
+        }
+        return distance;
+    }
+
+    private int getAverageDistanceInCluster(int index) {
+        int distance = 0;
+        double[] instance = this.data[index];
+        if(instancesInClusters.contains(index)){
+            int clusterIndex = instancesInClusters.get(index);
+            for(int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances(); i++){
+                distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
+            }
+            distance = distance / this.clusters[clusterIndex].getNumberOfInstances();
+        }
+        return distance;
+    }
 }
