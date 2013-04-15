@@ -388,50 +388,56 @@ public class KMeans {
 		}
 	}
 
-	public double getAverageSilhouetteValue() {
-		double silhouette = 0;
-        for(int i = 0; i < this.data.length; i++){
-            try{
-                int a = getAverageDistanceInCluster(i);
-                int b = getAverageDistanceOutsideCluster(i);
-                silhouette += (b - a)/Math.max(b, a);
-            } catch (ArithmeticException e){
-
-            }
-        }
-        silhouette = silhouette / this.getClusters().length;
-		return silhouette;
-	}
-
-    private int getAverageDistanceOutsideCluster(int index) {
-        int distance = 0;
-        double[] instance = this.data[index];
-        int clusterIndex = -1;
-        if(instancesInClusters.containsKey(index)){
-            clusterIndex = instancesInClusters.get(index);
-        }
-        for (int j = 0; j < this.clusters.length; j++) {
-            if (j != clusterIndex) {
-                int c_distance = 0;
-                for (int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances() - 1; i++) {
-                    c_distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
+    public double getAverageSilhouetteValue() {
+        double silhouette = 0;
+        for(int i = 0; i < k; i++) {
+            for(int j = 0; j < clusters[i].getNumberOfInstances(); j++) {
+                double a = clusters[i].getAverageDistanceOfPoint(data, clusters[i].getIndices().get(j));
+                double b = Double.MAX_VALUE;
+                for(int l = 0; l < k; l++) {
+                    if(l != k) {
+                        double tmpB = clusters[l].getAverageDistanceOfPointToAllPoints(data,clusters[i].getIndices().get(j));
+                        if(tmpB < b) {
+                            b = tmpB;
+                        }
+                    }
                 }
-                distance += c_distance / this.clusters[clusterIndex].getNumberOfInstances();
+                silhouette += (b-a)/Math.max(a, b);
             }
         }
-        return distance;
+        silhouette /= data.length;
+        return silhouette;
     }
 
-    private int getAverageDistanceInCluster(int index) {
-        int distance = 0;
-        double[] instance = this.data[index];
-        if(instancesInClusters.containsKey(index)){
-            int clusterIndex = instancesInClusters.get(index);
-            for(int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances() - 1; i++){
-                distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
-            }
-            distance = distance / this.clusters[clusterIndex].getNumberOfInstances();
-        }
-        return distance;
-    }
+//    private int getAverageDistanceOutsideCluster(int index) {
+//        int distance = 0;
+//        double[] instance = this.data[index];
+//        int clusterIndex = -1;
+//        if(instancesInClusters.containsKey(index)){
+//            clusterIndex = instancesInClusters.get(index);
+//        }
+//        for (int j = 0; j < this.clusters.length; j++) {
+//            if (j != clusterIndex) {
+//                int c_distance = 0;
+//                for (int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances() - 1; i++) {
+//                    c_distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
+//                }
+//                distance += c_distance / this.clusters[clusterIndex].getNumberOfInstances();
+//            }
+//        }
+//        return distance;
+//    }
+//
+//    private int getAverageDistanceInCluster(int index) {
+//        int distance = 0;
+//        double[] instance = this.data[index];
+//        if(instancesInClusters.containsKey(index)){
+//            int clusterIndex = instancesInClusters.get(index);
+//            for(int i = 0; i < this.clusters[clusterIndex].getNumberOfInstances() - 1; i++){
+//                distance += EuclideanDistance.distance(instance, this.clusters[clusterIndex].getInstances(this.data)[i]);
+//            }
+//            distance = distance / this.clusters[clusterIndex].getNumberOfInstances();
+//        }
+//        return distance;
+//    }
 }
