@@ -305,7 +305,8 @@ public class KMeans {
 	public double getSSB() {
 		double ssb=0;
         for (int i = 0; i < clusters.length; i ++) {
-            ssb += clusters[i].SSB(this.data, );
+//            TODO: get m
+//            ssb += clusters[i].SSB(this.data, );
         }
 		return ssb;
 	}
