@@ -133,9 +133,12 @@ public class Cluster {
 	 * @return the SSE value for this cluster.
 	 */
 	public double SSE(double[][] data) {
-		double sse = 0d;
-		//TODO
-		return sse;
+        double sse = 0d;
+        double[][] instances = getInstances(data);
+        for (int i = 0; i < instances.length; i ++) {
+            sse += Math.pow(EuclideanDistance.distance(instances[i], centroid), 2);
+        }
+        return sse;
 	}
 
 	/**
@@ -145,10 +148,13 @@ public class Cluster {
 	 * @param data
 	 * @return
 	 */
-	public double SSB(double[] m) {
-		double ssb=0;
-		//TODO
-		return ssb;
+	public double SSB(double[][] data, double[] m) {
+        double ssb=0;
+        double[][] instances = getInstances(data);
+        for (int i = 0; i < instances.length; i ++) {
+            ssb += data.length * Math.pow(EuclideanDistance.distance(instances[i], m), 2);
+        }
+        return ssb;
 	}
 
 	/**

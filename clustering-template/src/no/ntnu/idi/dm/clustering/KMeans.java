@@ -322,6 +322,7 @@ public class KMeans {
 			sse[i] = clusters[i].SSE(data);
 		}
 		return sse;
+
 	}
 
 	public void printCentroids() {

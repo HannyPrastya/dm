@@ -171,7 +171,7 @@ public class KMeans {
         boolean feedback = false;
         for(int i = 0; i < getData().length; i++){
             int index = getIndexOfClosestCluster(getData()[i]);
-            if(instancesInClusters.get(i) != index){
+            if(instancesInClusters.contains(i) && instancesInClusters.get(i) != index){
                 instancesInClusters.put(i, index);
                 feedback = true;
             }
@@ -297,9 +297,11 @@ public class KMeans {
 	 * @return SSE.
 	 */
 	public double getSSE() {
-		double sse=0;
-		//TODO
-		return sse;
+        double sse=0;
+        for (int i = 0; i < clusters.length; i ++) {
+            sse += clusters[i].SSE(this.data);
+        }
+        return sse;
 	}
 
 	/**
@@ -307,9 +309,12 @@ public class KMeans {
 	 * @return SSB.
 	 */
 	public double getSSB() {
-		double ssb=0;
-		//TODO
-		return ssb;
+        double ssb=0;
+        for (int i = 0; i < clusters.length; i ++) {
+//            TODO: get m
+//            ssb += clusters[i].SSB(this.data, );
+        }
+        return ssb;
 	}
 
 	/**
