@@ -137,8 +137,9 @@ public class Cluster {
 	 */
 	public double SSE(double[][] data) {
 		double sse = 0d;
-        for (int i = 0; i < data.length; i ++) {
-            sse += Math.pow(distanceFunction.distance(data[i], centroid), 2);
+        double[][] instances = getInstances(data);
+        for (int i = 0; i < instances.length; i ++) {
+            sse += Math.pow(distanceFunction.distance(instances[i], centroid), 2);
         }
 		return sse;
 	}
@@ -152,8 +153,9 @@ public class Cluster {
 	 */
 	public double SSB(double[][] data, double[] m) {
 		double ssb=0;
-        for (int i = 0; i < data.length; i ++) {
-            ssb += data.length * Math.pow(distanceFunction.distance(data[i], m), 2);
+        double[][] instances = getInstances(data);
+        for (int i = 0; i < instances.length; i ++) {
+            ssb += data.length * Math.pow(distanceFunction.distance(instances[i], m), 2);
         }
 		return ssb;
 	}
